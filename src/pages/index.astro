@@ -1,6 +1,7 @@
 ---
 const phoneDisplay = "NUMER TELEFONU";
-const phoneHref = "#";
+const realPhoneNumber = "";
+const phoneHref = realPhoneNumber ? `tel:${realPhoneNumber.replace(/\s/g, "")}` : null;
 const serviceArea = "Rzeszów i okolice";
 
 const helpTopics = [
@@ -77,8 +78,9 @@ const reasons = [
     <title>Informatyk w Domu Rzeszów | Pomoc z telefonem, Wi‑Fi i telewizorem</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Przejdź do głównej treści</a>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Informatyk w Domu — strona główna">
+      <a class="brand" href="/" aria-label="Informatyk w Domu — strona główna">
         <span class="brand-mark" aria-hidden="true">ID</span>
         <span>Informatyk w Domu</span>
       </a>
@@ -86,10 +88,18 @@ const reasons = [
         <a href="#pomoc">Z czym pomagam</a>
         <a href="#jak-to-dziala">Jak to działa</a>
       </nav>
-      <a class="header-phone" href={phoneHref}>Zadzwoń: {phoneDisplay}</a>
+      {
+        phoneHref ? (
+          <a class="header-phone" href={phoneHref} aria-label={`Zadzwoń do Informatyka w Domu: ${phoneDisplay}`}>
+            Zadzwoń: {phoneDisplay}
+          </a>
+        ) : (
+          <span class="header-phone header-phone-unavailable">Zadzwoń: {phoneDisplay}</span>
+        )
+      }
     </header>
 
-    <main id="top">
+    <main id="main-content">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-content">
           <p class="eyebrow">{serviceArea}</p>
@@ -99,12 +109,20 @@ const reasons = [
             Nie wiesz, co jest nie tak? Po prostu opowiedz, co się dzieje. Sprawdzę problem
             na miejscu.
           </p>
-          <div class="hero-actions" aria-label="Kontakt telefoniczny">
-            <a class="button button-primary" href={phoneHref}>Zadzwoń</a>
+          <div class="hero-actions">
+            {
+              phoneHref ? (
+                <a class="button button-primary" href={phoneHref} aria-label={`Zadzwoń do Informatyka w Domu: ${phoneDisplay}`}>
+                  Zadzwoń
+                </a>
+              ) : (
+                <span class="button button-primary button-unavailable">Zadzwoń</span>
+              )
+            }
             <span class="phone-placeholder">{phoneDisplay}</span>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Najważniejsza informacja">
+        <aside class="hero-card">
           <strong>Pomoc z technologią w domu</strong>
           <p>Telefon, telewizor, dekoder, Wi‑Fi, drukarka albo kamery — przyjadę i pomogę Ci to ustawić.</p>
         </aside>
@@ -116,9 +134,9 @@ const reasons = [
           <h2 id="help-title">Z czym mogę pomóc?</h2>
           <p>Wybierz opis, który najbardziej pasuje do Twojej sytuacji. Nie musisz znać przyczyny.</p>
         </div>
-        <div class="cards-grid">
-          {helpTopics.map((topic) => <article class="problem-card"><span aria-hidden="true">✓</span><h3>{topic}</h3></article>)}
-        </div>
+        <ul class="cards-grid">
+          {helpTopics.map((topic) => <li class="problem-card"><span aria-hidden="true">✓</span><h3>{topic}</h3></li>)}
+        </ul>
       </section>
 
       <section class="reassurance" aria-labelledby="reassurance-title">
@@ -138,15 +156,15 @@ const reasons = [
           <p class="eyebrow">Prosto i spokojnie</p>
           <h2 id="steps-title">Jak to działa?</h2>
         </div>
-        <div class="steps-grid">
+        <ol class="steps-grid">
           {steps.map((step, index) => (
-            <article class="step-card">
-              <span class="step-number">{index + 1}</span>
+            <li class="step-card">
+              <span class="step-number" aria-hidden="true">{index + 1}</span>
               <h3>{step.title}</h3>
               <p>{step.text}</p>
-            </article>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       <section class="section examples" aria-labelledby="examples-title">
@@ -166,16 +184,24 @@ const reasons = [
           <h2 id="why-title">Pomoc na miejscu, po ludzku</h2>
           <p>To nie jest zwykły katalog usług komputerowych. Chodzi o praktyczne rozwiązanie problemu w domu.</p>
         </div>
-        <div class="reason-list">
-          {reasons.map((reason) => <article><p>{reason}</p></article>)}
-        </div>
+        <ul class="reason-list">
+          {reasons.map((reason) => <li><p>{reason}</p></li>)}
+        </ul>
       </section>
 
       <section class="final-cta" aria-labelledby="final-cta-title">
         <p class="eyebrow">{serviceArea}</p>
         <h2 id="final-cta-title">Masz problem z technologią w domu?</h2>
         <p>Nie musisz wiedzieć, jak go nazwać. Powiedz mi, co się dzieje.</p>
-        <a class="button button-primary" href={phoneHref}>Zadzwoń</a>
+        {
+          phoneHref ? (
+            <a class="button button-primary" href={phoneHref} aria-label={`Zadzwoń do Informatyka w Domu: ${phoneDisplay}`}>
+              Zadzwoń
+            </a>
+          ) : (
+            <span class="button button-primary button-unavailable">Zadzwoń</span>
+          )
+        }
         <span>{phoneDisplay}</span>
       </section>
     </main>
@@ -183,7 +209,7 @@ const reasons = [
     <footer class="site-footer">
       <p><strong>Informatyk w Domu</strong></p>
       <p>{serviceArea}</p>
-      <p>Telefon: <a href={phoneHref}>{phoneDisplay}</a></p>
+      <p>Telefon: {phoneHref ? <a href={phoneHref}>{phoneDisplay}</a> : <span>{phoneDisplay}</span>}</p>
       <p>&copy; {new Date().getFullYear()} Informatyk w Domu</p>
     </footer>
   </body>
@@ -225,10 +251,29 @@ const reasons = [
     color: inherit;
   }
 
+  .skip-link {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 10;
+    transform: translateY(-150%);
+    border-radius: 999px;
+    background: var(--text);
+    color: #ffffff;
+    font-weight: 800;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
   .site-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 1rem;
     max-width: 1180px;
     margin: 0 auto;
@@ -244,6 +289,7 @@ const reasons = [
 
   .brand {
     display: inline-flex;
+    flex: 1 1 220px;
     align-items: center;
     gap: 0.75rem;
     color: var(--text);
@@ -265,6 +311,8 @@ const reasons = [
 
   .site-nav {
     display: flex;
+    flex: 1 1 260px;
+    justify-content: center;
     align-items: center;
     gap: 1rem;
     color: var(--muted);
@@ -282,6 +330,7 @@ const reasons = [
 
   .header-phone {
     display: inline-flex;
+    flex: 0 1 auto;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
@@ -290,7 +339,17 @@ const reasons = [
     color: var(--primary-dark);
     font-weight: 800;
     padding: 0.7rem 1rem;
+    text-align: center;
     text-decoration: none;
+  }
+
+  .header-phone-unavailable,
+  .button-unavailable {
+    cursor: default;
+  }
+
+  .button-unavailable {
+    opacity: 0.9;
   }
 
   main {
@@ -331,6 +390,7 @@ const reasons = [
   h3,
   p {
     margin-top: 0;
+    overflow-wrap: break-word;
   }
 
   h1 {
@@ -445,11 +505,14 @@ const reasons = [
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .problem-card,
   .step-card,
-  .reason-list article {
+  .reason-list li {
     border: 1px solid var(--border);
     border-radius: 24px;
     background: var(--surface);
@@ -603,11 +666,12 @@ const reasons = [
 
   @media (max-width: 920px) {
     .site-header {
-      align-items: flex-start;
+      align-items: stretch;
       flex-direction: column;
     }
 
     .site-nav {
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
 
@@ -638,6 +702,16 @@ const reasons = [
       display: none;
     }
 
+    h1 {
+      font-size: clamp(2.1rem, 13vw, 3rem);
+      letter-spacing: -0.045em;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 10vw, 2.35rem);
+      letter-spacing: -0.035em;
+    }
+
     .button,
     .hero-actions .button {
       width: 100%;
@@ -650,7 +724,7 @@ const reasons = [
 
     .problem-card,
     .step-card,
-    .reason-list article,
+    .reason-list li,
     .example-list li {
       padding: 1rem;
     }
