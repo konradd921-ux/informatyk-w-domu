@@ -51,6 +51,12 @@ const reasons = [
   "Możesz spokojnie pytać — bez oceniania i pośpiechu.",
   "Zajmuję się codzienną technologią w domu: telefonem, telewizorem, Wi‑Fi, drukarką i kamerami.",
 ];
+
+const trustPoints = [
+  "Przyjeżdżam osobiście",
+  "Pomagam na miejscu, w Twoim domu",
+  "Tłumaczę normalnym językiem",
+];
 ---
 
 <html lang="pl">
@@ -137,6 +143,31 @@ const reasons = [
         <ul class="cards-grid">
           {helpTopics.map((topic) => <li class="problem-card"><span aria-hidden="true">✓</span><h3>{topic}</h3></li>)}
         </ul>
+      </section>
+
+      <section class="section personal" aria-labelledby="personal-title">
+        <div class="personal-heading">
+          <p class="eyebrow">Osobiście i spokojnie</p>
+          <h2 id="personal-title">Jestem Konrad.</h2>
+        </div>
+        <div class="personal-content">
+          <p>
+            Na co dzień mam kontakt z osobami, które potrzebują pomocy z technologią. Pomagam
+            ogarnąć telefony, internet, Wi‑Fi, telewizory i inne urządzenia, które po prostu mają
+            działać.
+          </p>
+          <p>
+            Zauważyłem, że dla wielu osób największym problemem nie jest sama technologia.
+            Problemem jest brak kogoś, kto po prostu przyjedzie i pomoże.
+          </p>
+          <p>
+            Dlatego powstał Informatyk w Domu. Przyjadę do Ciebie, zobaczę problem na miejscu i
+            spokojnie go rozwiążemy.
+          </p>
+          <ul class="trust-list">
+            {trustPoints.map((point) => <li>{point}</li>)}
+          </ul>
+        </div>
       </section>
 
       <section class="reassurance" aria-labelledby="reassurance-title">
@@ -501,7 +532,8 @@ const reasons = [
 
   .cards-grid,
   .steps-grid,
-  .reason-list {
+  .reason-list,
+  .trust-list {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
@@ -530,6 +562,44 @@ const reasons = [
     background: #e4f3ef;
     color: var(--primary-dark);
     font-weight: 900;
+  }
+
+  .personal {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(1.5rem, 5vw, 3rem);
+    align-items: start;
+    border-radius: 36px;
+    background: var(--surface);
+    box-shadow: 0 10px 30px rgba(23, 32, 51, 0.06);
+  }
+
+  .personal h2 {
+    margin-bottom: 0;
+  }
+
+  .personal-content p {
+    max-width: 740px;
+    color: var(--muted);
+  }
+
+  .personal-content p:last-of-type {
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .trust-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .trust-list li {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface-soft);
+    color: var(--primary-dark);
+    font-weight: 800;
+    padding: 1rem;
   }
 
   .reassurance {
@@ -680,6 +750,7 @@ const reasons = [
     }
 
     .hero,
+    .personal,
     .reassurance {
       grid-template-columns: 1fr;
     }
@@ -687,6 +758,7 @@ const reasons = [
     .cards-grid,
     .steps-grid,
     .reason-list,
+    .trust-list,
     .example-list,
     .site-footer {
       grid-template-columns: 1fr;
@@ -725,6 +797,7 @@ const reasons = [
     .problem-card,
     .step-card,
     .reason-list li,
+    .trust-list li,
     .example-list li {
       padding: 1rem;
     }
